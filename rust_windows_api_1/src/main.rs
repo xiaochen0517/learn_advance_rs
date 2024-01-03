@@ -9,7 +9,7 @@ fn create_colorref(red: u8, green: u8, blue: u8) -> COLORREF {
     COLORREF((blue as u32) << 16 | (green as u32) << 8 | (red as u32))
 }
 
-const BUTTON_ID: i32 = 1000;
+const BUTTON_ID: isize = 1000;
 
 fn main() -> Result<()> {
     unsafe {
@@ -58,7 +58,7 @@ fn main() -> Result<()> {
             80, // button width
             25, // button height
             hwnd,
-            HMENU(BUTTON_ID as isize),
+            HMENU(BUTTON_ID),
             HINSTANCE(GetWindowLongPtrW(hwnd, GWLP_HINSTANCE)),
             None,
         );
@@ -95,8 +95,7 @@ extern "system" fn wndproc(window: HWND, message: u32, wparam: WPARAM, lparam: L
             }
             WM_COMMAND => {
                 println!("WM_COMMAND");
-                let control_id = wparam.0 as i32;
-                if control_id == BUTTON_ID {
+                if wparam.0 == BUTTON_ID as usize {
                     println!("Button was clicked!");
                 }
                 LRESULT(0)
