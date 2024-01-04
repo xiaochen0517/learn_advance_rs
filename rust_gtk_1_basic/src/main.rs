@@ -1,3 +1,4 @@
+use std::cell::Cell;
 use gtk::prelude::*;
 use gtk::{glib, Application, ApplicationWindow, Button};
 
@@ -17,17 +18,23 @@ fn main() -> glib::ExitCode {
 fn build_ui(app: &Application) {
     // Create a button with label and margins
     let button = Button::builder()
-        .label("Press me!")
+        .label("ON")
         .margin_top(12)
         .margin_bottom(12)
         .margin_start(12)
         .margin_end(12)
         .build();
 
+    let status = Cell::new(false);
     // Connect to "clicked" signal of `button`
-    button.connect_clicked(|button| {
-        // Set the label to "Hello World!" after the button has been clicked on
-        button.set_label("Hello World!");
+    button.connect_clicked(move |button| {
+        if status.get() {
+            button.set_label("ON");
+            status.set(false)
+        } else {
+            button.set_label("OFF");
+            status.set(true)
+        }
     });
 
     // Create a window
