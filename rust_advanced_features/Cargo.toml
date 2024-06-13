@@ -1,0 +1,6 @@
+[package]
+name = "rust_advanced_features"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
