@@ -24,7 +24,7 @@ fn run_app<T: Backend>(terminal: &mut Terminal<T>, app: &mut App) -> io::Result<
             match app.current_screen {
                 CurrentScreen::Home => {
                     match key.code {
-                        KeyCode::Char('q') => {
+                        KeyCode::Char('q') | KeyCode::Esc => {
                             app.current_screen = CurrentScreen::Exit;
                         }
                         KeyCode::Char('e') => {
@@ -65,7 +65,7 @@ fn run_app<T: Backend>(terminal: &mut Terminal<T>, app: &mut App) -> io::Result<
                             app.current_screen = CurrentScreen::Home;
                             app.currently_editing = None;
                         }
-                        KeyCode::Tab => {
+                        KeyCode::Tab | KeyCode::Left | KeyCode::Right => {
                             app.toggle_editing();
                         }
                         KeyCode::Char(value) => {
@@ -90,6 +90,9 @@ fn run_app<T: Backend>(terminal: &mut Terminal<T>, app: &mut App) -> io::Result<
                         }
                         KeyCode::Char('n') | KeyCode::Char('q') => {
                             return Ok(false);
+                        }
+                        KeyCode::Esc => {
+                            app.current_screen = CurrentScreen::Home;
                         }
                         _ => {}
                     }
